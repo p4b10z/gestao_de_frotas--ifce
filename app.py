@@ -16,7 +16,7 @@ class Veiculos(db.Model) :
     data_aquisicao = db.Column(db.Integer, nullable=False) #quando for preencher preenche com, por exemplo, 10022000 para 10-02-2000(depois concertar para outro tipo)
     status = db.Column(db.String(20), default='Ativo')
 
-#banco de dados de pessoas(para o loguin)
+#banco de dados de pessoas(ainda vou adicionar)
 
 
 @app.route('/', methods = ["GET" , "POST"])
