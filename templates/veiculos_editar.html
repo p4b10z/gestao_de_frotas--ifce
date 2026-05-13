@@ -1,0 +1,78 @@
+{% extends "layout_sem_menu.html" %}
+
+{% block title %}Editar Veículo{% endblock %}
+
+{% block content %}
+<div class="container-conteudo">
+    <div class="menu-superior">
+        <div class="logo">
+            <i class="fas fa-truck"></i> Gestão de Frotas
+        </div>
+        <div class="menu-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/veiculos">Veículos</a>
+            <a href="/veiculos/cadastrar">Cadastrar</a>
+            <a href="/veiculos/descricao/{{ veiculo.id }}">Descrição</a>
+        </div>
+        <a href="/" class="btn-sair"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    </div>
+
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h2 style="color: #2c3e50;">
+                <i class="fas fa-edit" style="color: #667eea;"></i> Editar Veículo
+            </h2>
+            <a href="/veiculos" class="btn-secondary">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </a>
+        </div>
+
+        <form action="/veiculos/editar/{{ veiculo.id }}" method="POST">
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                <div class="form-group">
+                    <label>Placa *</label>
+                    <input type="text" name="placa" value="{{ veiculo.placa }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Marca *</label>
+                    <input type="text" name="marca" value="{{ veiculo.marca }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Modelo *</label>
+                    <input type="text" name="modelo" value="{{ veiculo.modelo }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Ano de Fabricação *</label>
+                    <input type="number" name="ano_fabricacao" value="{{ veiculo.ano_fabricacao }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Chassi *</label>
+                    <input type="text" name="chassi" value="{{ veiculo.chassi }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Data de Aquisição *</label>
+                    <input type="text" name="data_aquisicao" value="{{ veiculo.data_aquisicao }}" required>
+                    <small style="color: #666;">Exemplo: 15032020 = 15/03/2020</small>
+                </div>
+                <div class="form-group">
+                    <label>Status *</label>
+                    <select name="status" required>
+                        <option value="Ativo" {% if veiculo.status == 'Ativo' %}selected{% endif %}>Ativo</option>
+                        <option value="Em Manutenção" {% if veiculo.status == 'Em Manutenção' %}selected{% endif %}>Em Manutenção</option>
+                        <option value="Inativo" {% if veiculo.status == 'Inativo' %}selected{% endif %}>Inativo</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-actions" style="margin-top: 30px; display: flex; gap: 10px;">
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-save"></i> Salvar Alterações
+                </button>
+                <a href="/veiculos" class="btn-secondary">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

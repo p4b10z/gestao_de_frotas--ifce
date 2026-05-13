@@ -1,0 +1,46 @@
+{% extends "layout_sem_menu.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-card">
+        <i class="fas fa-truck" style="font-size: 50px; color: #667eea;"></i>
+        <h2>Gestão de Frotas</h2>
+        <p class="subtitle">Faça login para continuar</p>
+        
+        <form id="loginForm" onsubmit="return validarLogin(event)">
+            <input type="text" id="usuario" name="usuario" placeholder="Usuário" required>
+            <input type="password" id="senha" name="senha" placeholder="Senha" required>
+            <button type="submit">Entrar</button>
+        </form>
+        
+        <div id="erroMsg" style="color: #e74c3c; margin-top: 10px; font-size: 14px; display: none;">
+            <i class="fas fa-exclamation-circle"></i> Usuário ou senha inválidos!
+        </div>
+    </div>
+</div>
+
+<script>
+function validarLogin(event) {
+    event.preventDefault();
+    
+    var usuario = document.getElementById('usuario').value;
+    var senha = document.getElementById('senha').value;
+    var erroDiv = document.getElementById('erroMsg');
+
+  //a senha bota adm adm pq ai eu ainda vou conectar com usuario no banco de dados   
+    if (usuario === 'adm' && senha === 'adm') {
+        window.location.href = '/dashboard';
+    } else {
+        erroDiv.style.display = 'block';
+        document.getElementById('senha').value = '';
+        setTimeout(function() {
+            erroDiv.style.display = 'none';
+        }, 3000);
+    }
+    
+    return false;
+}
+</script>
+{% endblock %}

@@ -1,0 +1,208 @@
+{% extends "layout_sem_menu.html" %}
+
+{% block title %}Veículos{% endblock %}
+
+{% block content %}
+<div class="container-conteudo">
+    <div class="menu-superior">
+        <div class="logo">
+            <i class="fas fa-truck"></i> Gestão de Frotas
+        </div>
+        <div class="menu-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/veiculos" class="ativo">Veículos</a>
+            <a href="/veiculos/cadastrar">Cadastrar</a>
+        </div>
+        <a href="/" class="btn-sair"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filtros-card">
+        <div class="filtros-grid">
+            <div>
+                <label>Status</label>
+                <select id="filtroStatus">
+                    <option value="">Todos</option>
+                    <option value="Ativo">Ativo</option>
+                    <option value="Manutenção">Em Manutenção</option>
+                    <option value="Inativo">Inativo</option>
+                </select>
+            </div>
+            <div>
+                <label>Marca</label>
+                <input type="text" id="filtroMarca" placeholder="Digite a marca">
+            </div>
+            <div>
+                <label>Modelo</label>
+                <input type="text" id="filtroModelo" placeholder="Digite o modelo">
+            </div>
+            <div>
+                <label>&nbsp;</label>
+                <button class="btn-primary" onclick="aplicarFiltros()">
+                    <i class="fas fa-search"></i> Filtrar
+                </button>
+                <button class="btn-secondary" onclick="limparFiltros()">
+                    <i class="fas fa-eraser"></i> Limpar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CABEÇALHO -->
+    <div class="card-header-custom">
+        <h3><i class="fas fa-car"></i> Lista de Veículos</h3>
+        <div style="display: flex; gap: 10px;">
+            <div class="view-toggle">
+                <button class="view-btn active" onclick="mudarVisualizacao('grid')" title="Visualizar em cards">
+                    <i class="fas fa-th-large"></i>
+                </button>
+                <button class="view-btn" onclick="mudarVisualizacao('lista')" title="Visualizar em lista">
+                    <i class="fas fa-list"></i>
+                </button>
+            </div>
+            <a href="/veiculos/cadastrar" class="btn-primary">
+                <i class="fas fa-plus"></i> Novo Veículo
+            </a>
+        </div>
+    </div>
+
+    <!-- VISUALIZAÇÃO EM GRID (CARDS) - DADOS DO BANCO -->
+    <div id="gridView" class="veiculos-grid">
+        {% for veiculo in Veiculos %}
+        <div class="veiculo-card" 
+             data-marca="{{ veiculo.marca }}" 
+             data-modelo="{{ veiculo.modelo }}" 
+             data-status="{{ veiculo.status }}">
+            <div class="veiculo-imagem">
+                <div class="placeholder-img">
+                    {% if veiculo.marca in ['Scania', 'Mercedes', 'Volvo', 'Truck'] %}
+                        <i class="fas fa-truck"></i>
+                    {% else %}
+                        <i class="fas fa-car"></i>
+                    {% endif %}
+                </div>
+                <div class="veiculo-status">
+                    {% if veiculo.status == 'Ativo' %}
+                        <span class="badge badge-success">{{ veiculo.status }}</span>
+                    {% elif veiculo.status == 'Em Manutenção' or veiculo.status == 'Manutenção' %}
+                        <span class="badge badge-warning">{{ veiculo.status }}</span>
+                    {% else %}
+                        <span class="badge badge-danger">{{ veiculo.status }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="veiculo-conteudo">
+                <div class="veiculo-titulo">{{ veiculo.marca }} {{ veiculo.modelo }}</div>
+                <div class="veiculo-placa">{{ veiculo.placa }}</div>
+                <div class="veiculo-detalhes">
+                    <div class="veiculo-detalhe">
+                        <i class="fas fa-calendar"></i> {{ veiculo.ano_fabricacao }}
+                    </div>
+                    <div class="veiculo-detalhe">
+                        <i class="fas fa-id-card"></i> {{ veiculo.placa }}
+                    </div>
+                </div>
+                <div class="veiculo-acoes">
+                    <a href="/veiculos/descricao/{{ veiculo.id }}" class="btn-ver">
+                        <i class="fas fa-eye"></i> Ver detalhes
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- VISUALIZAÇÃO EM LISTA (TABELA) - DADOS DO BANCO -->
+    <div id="listView" style="display: none;">
+        <div class="card-veiculos">
+            <div class="tabela-responsive">
+                <table class="tabela-veiculos">
+                    <thead>
+                        <tr>
+                            <th>Placa</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Ano</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for veiculo in Veiculos %}
+                        <tr>
+                            <td><strong>{{ veiculo.placa }}</strong></td>
+                            <td>{{ veiculo.marca }}</td>
+                            <td>{{ veiculo.modelo }}</td>
+                            <td>{{ veiculo.ano_fabricacao }}</td>
+                            <td>
+                                {% if veiculo.status == 'Ativo' %}
+                                    <span class="badge badge-success">{{ veiculo.status }}</span>
+                                {% elif veiculo.status == 'Em Manutenção' or veiculo.status == 'Manutenção' %}
+                                    <span class="badge badge-warning">{{ veiculo.status }}</span>
+                                {% else %}
+                                    <span class="badge badge-danger">{{ veiculo.status }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="/veiculos/descricao/{{ veiculo.id }}" class="btn-ver">
+                                    <i class="fas fa-eye"></i> Ver
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function mudarVisualizacao(tipo) {
+    const gridView = document.getElementById('gridView');
+    const listView = document.getElementById('listView');
+    const botoes = document.querySelectorAll('.view-btn');
+    
+    botoes.forEach(btn => btn.classList.remove('active'));
+    
+    if (tipo === 'grid') {
+        gridView.style.display = 'grid';
+        listView.style.display = 'none';
+        botoes[0].classList.add('active');
+    } else {
+        gridView.style.display = 'none';
+        listView.style.display = 'block';
+        botoes[1].classList.add('active');
+    }
+}
+
+function aplicarFiltros() {
+    const status = document.getElementById('filtroStatus').value;
+    const marca = document.getElementById('filtroMarca').value.toLowerCase();
+    const modelo = document.getElementById('filtroModelo').value.toLowerCase();
+    
+    const cards = document.querySelectorAll('.veiculo-card');
+    
+    cards.forEach(card => {
+        const cardMarca = card.getAttribute('data-marca').toLowerCase();
+        const cardModelo = card.getAttribute('data-modelo').toLowerCase();
+        const cardStatus = card.querySelector('.badge').innerText;
+        
+        const matchStatus = !status || cardStatus === status;
+        const matchMarca = !marca || cardMarca.includes(marca);
+        const matchModelo = !modelo || cardModelo.includes(modelo);
+        
+        card.style.display = (matchStatus && matchMarca && matchModelo) ? '' : 'none';
+    });
+}
+
+function limparFiltros() {
+    document.getElementById('filtroStatus').value = '';
+    document.getElementById('filtroMarca').value = '';
+    document.getElementById('filtroModelo').value = '';
+    
+    const cards = document.querySelectorAll('.veiculo-card');
+    cards.forEach(card => card.style.display = '');
+}
+</script>
+{% endblock %}

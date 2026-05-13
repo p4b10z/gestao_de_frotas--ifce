@@ -1,0 +1,62 @@
+{% extends "layout_sem_menu.html" %}
+
+{% block title %}Cadastrar Veículo{% endblock %}
+
+{% block content %}
+<div class="container-conteudo">
+    <div class="menu-superior">
+        <div class="logo">
+            <i class="fas fa-truck"></i> Gestão de Frotas
+        </div>
+        <div class="menu-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/veiculos">Veículos</a>
+            <a href="/veiculos/cadastrar" class="ativo">Cadastrar</a>
+        </div>
+        <a href="/" class="btn-sair"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    </div>
+
+    <div class="card">
+        <h3>Cadastrar Veículo</h3>
+        <form action="/veiculos/cadastrar" method="POST">
+            <div class="form-group">
+                <label>Placa *</label>
+                <input type="text" name="placa" placeholder="ABC-1234" required>
+            </div>
+            <div class="form-group">
+                <label>Marca *</label>
+                <input type="text" name="marca" placeholder="Fiat" required>
+            </div>
+            <div class="form-group">
+                <label>Modelo *</label>
+                <input type="text" name="modelo" placeholder="Strada" required>
+            </div>
+            <div class="form-group">
+                <label>Ano de Fabricação *</label>
+                <input type="number" name="ano_fabricacao" placeholder="2020" required>
+            </div>
+            <div class="form-group">
+                <label>Chassi *</label>
+                <input type="text" name="chassi" placeholder="9BD12345678901234" required>
+            </div>
+            <div class="form-group">
+                <label>Data de Aquisição *</label>
+                <input type="text" name="data_aquisicao" placeholder="15032020 (DDMMAAAA)" required>
+                <small style="color: #666;">Exemplo: 15032020 = 15/03/2020</small>
+            </div>
+            <div class="form-group">
+                <label>Status *</label>
+                <select name="status" required>
+                    <option value="Ativo">Ativo</option>
+                    <option value="Em Manutenção">Em Manutenção</option>
+                    <option value="Inativo">Inativo</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Salvar Veículo</button>
+                <a href="/veiculos" class="btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

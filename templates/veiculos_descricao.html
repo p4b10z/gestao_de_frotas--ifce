@@ -1,0 +1,77 @@
+{% extends "layout_sem_menu.html" %}
+
+{% block title %}Descrição do Veículo{% endblock %}
+
+{% block content %}
+<div class="container-conteudo">
+    <div class="menu-superior">
+        <div class="logo">
+            <i class="fas fa-truck"></i> Gestão de Frotas
+        </div>
+        <div class="menu-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/veiculos">Veículos</a>
+            <a href="/veiculos/cadastrar">Cadastrar</a>
+        </div>
+        <a href="/" class="btn-sair"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    </div>
+
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h2 style="color: #2c3e50;">
+                <i class="fas fa-car" style="color: #667eea;"></i> {{ veiculo.marca }} {{ veiculo.modelo }}
+            </h2>
+            <a href="/veiculos" class="btn-secondary">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
+                <label style="color: #666; font-size: 12px;">PLACA</label>
+                <p style="font-size: 18px; font-weight: bold; color: #2c3e50;">{{ veiculo.placa }}</p>
+            </div>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
+                <label style="color: #666; font-size: 12px;">MARCA</label>
+                <p style="font-size: 18px; font-weight: bold; color: #2c3e50;">{{ veiculo.marca }}</p>
+            </div>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
+                <label style="color: #666; font-size: 12px;">MODELO</label>
+                <p style="font-size: 18px; font-weight: bold; color: #2c3e50;">{{ veiculo.modelo }}</p>
+            </div>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
+                <label style="color: #666; font-size: 12px;">ANO</label>
+                <p style="font-size: 18px; font-weight: bold; color: #2c3e50;">{{ veiculo.ano_fabricacao }}</p>
+            </div>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
+                <label style="color: #666; font-size: 12px;">CHASSI</label>
+                <p style="font-size: 14px; font-weight: bold; color: #2c3e50;">{{ veiculo.chassi }}</p>
+            </div>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
+                <label style="color: #666; font-size: 12px;">STATUS</label>
+                <p>
+                    {% if veiculo.status == 'Ativo' %}
+                        <span class="badge badge-success" style="font-size: 14px; padding: 6px 15px;">{{ veiculo.status }}</span>
+                    {% elif veiculo.status == 'Em Manutenção' %}
+                        <span class="badge badge-warning" style="font-size: 14px; padding: 6px 15px;">{{ veiculo.status }}</span>
+                    {% else %}
+                        <span class="badge badge-danger" style="font-size: 14px; padding: 6px 15px;">{{ veiculo.status }}</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; display: flex; gap: 10px;">
+            <a href="/veiculos/editar/{{ veiculo.id }}" class="btn-primary">
+                <i class="fas fa-edit"></i> Editar
+            </a>
+            <a href="/veiculos/deletar/{{ veiculo.id }}" class="btn-danger" style="background: #e74c3c; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;" onclick="return confirm('Tem certeza que deseja deletar?')">
+                <i class="fas fa-trash"></i> Deletar
+            </a>
+            <a href="/veiculos" class="btn-secondary">
+                <i class="fas fa-list"></i> Ver Todos
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

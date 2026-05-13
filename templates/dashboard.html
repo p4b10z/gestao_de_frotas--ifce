@@ -1,0 +1,135 @@
+{% extends "layout_sem_menu.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-conteudo">
+    <div class="menu-superior">
+        <div class="logo">
+            <i class="fas fa-truck"></i> Gestão de Frotas
+        </div>
+        <div class="menu-links">
+            <a href="/dashboard" class="ativo">Dashboard</a>
+            <a href="/veiculos">Veículos</a>
+            <a href="/veiculos/cadastrar">Cadastrar</a>
+        </div>
+        <a href="/" class="btn-sair"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    </div>
+
+    <div class="grid-3">
+        <div class="card card-info">
+            <h4>Total de Veículos</h4>
+            <h1>{{ Veiculos|length }}</h1>
+        </div>
+        <div class="card card-info">
+            <h4>Veículos Ativos</h4>
+            <h1 style="color: #28a745;">
+                {% set ativos = Veiculos|selectattr('status', 'equalto', 'Ativo')|list %}
+                {{ ativos|length }}
+            </h1>
+        </div>
+        <div class="card card-info">
+            <h4>Em Manutenção</h4>
+            <h1 style="color: #ffc107;">
+                {% set manutencao = Veiculos|selectattr('status', 'equalto', 'Em Manutenção')|list %}
+                {{ manutencao|length }}
+            </h1>
+        </div>
+    </div>
+
+    <div class="grid-3">
+        <div class="card card-info">
+            <h4>Veículos Inativos</h4>
+            <h1 style="color: #dc3545;">
+                {% set inativos = Veiculos|selectattr('status', 'equalto', 'Inativo')|list %}
+                {{ inativos|length }}
+            </h1>
+        </div>
+        <div class="card card-info">
+            <h4>Disponíveis</h4>
+            <h1 style="color: #17a2b8;">
+                {% set disponiveis = Veiculos|selectattr('status', 'equalto', 'Ativo')|list %}
+                {{ disponiveis|length }}
+            </h1>
+        </div>
+        <div class="card card-info">
+            <h4>Cadastrados</h4>
+            <h1>{{ Veiculos|length }}</h1>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><i class="fas fa-chart-line"></i> Resumo da Frota</h3>
+        <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+            <div style="flex: 1; text-align: center; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                <div style="font-size: 14px; color: #666;">Ativos</div>
+                <div style="font-size: 28px; font-weight: bold; color: #28a745;">
+                    {% set ativos = Veiculos|selectattr('status', 'equalto', 'Ativo')|list %}
+                    {{ ativos|length }}
+                </div>
+            </div>
+            <div style="flex: 1; text-align: center; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                <div style="font-size: 14px; color: #666;">Em Manutenção</div>
+                <div style="font-size: 28px; font-weight: bold; color: #ffc107;">
+                    {% set manutencao = Veiculos|selectattr('status', 'equalto', 'Em Manutenção')|list %}
+                    {{ manutencao|length }}
+                </div>
+            </div>
+            <div style="flex: 1; text-align: center; padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                <div style="font-size: 14px; color: #666;">Inativos</div>
+                <div style="font-size: 28px; font-weight: bold; color: #dc3545;">
+                    {% set inativos = Veiculos|selectattr('status', 'equalto', 'Inativo')|list %}
+                    {{ inativos|length }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><i class="fas fa-calendar-alt"></i> Últimos Veículos Cadastrados</h3>
+        <div class="tabela-responsive">
+            <table class="tabela-veiculos">
+                <thead>
+                    <tr>
+                        <th>Placa</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Ano</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for veiculo in Veiculos[-5:]|reverse %}
+                    <tr>
+                        <td><strong>{{ veiculo.placa }}</strong></td>
+                        <td>{{ veiculo.marca }}</td>
+                        <td>{{ veiculo.modelo }}</td>
+                        <td>{{ veiculo.ano_fabricacao }}</td>
+                        <td>
+                            {% if veiculo.status == 'Ativo' %}
+                                <span class="badge badge-success">{{ veiculo.status }}</span>
+                            {% elif veiculo.status == 'Em Manutenção' %}
+                                <span class="badge badge-warning">{{ veiculo.status }}</span>
+                            {% else %}
+                                <span class="badge badge-danger">{{ veiculo.status }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><i class="fas fa-smile"></i> Bem-vindo ao sistema</h3>
+        <p>Aqui você poderá gerenciar veículos, motoristas, abastecimentos e manutenções.</p>
+        <p style="margin-top: 15px;">
+            <strong>Resumo rápido:</strong> Você tem 
+            <strong style="color: #28a745;">{% set ativos = Veiculos|selectattr('status', 'equalto', 'Ativo')|list %}{{ ativos|length }} veículos ativos</strong>, 
+            <strong style="color: #ffc107;">{% set manutencao = Veiculos|selectattr('status', 'equalto', 'Em Manutenção')|list %}{{ manutencao|length }} em manutenção</strong> e 
+            <strong style="color: #dc3545;">{% set inativos = Veiculos|selectattr('status', 'equalto', 'Inativo')|list %}{{ inativos|length }} inativos</strong>.
+        </p>
+    </div>
+</div>
+{% endblock %}
